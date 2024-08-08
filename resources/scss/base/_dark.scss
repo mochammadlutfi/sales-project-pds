@@ -1,0 +1,21 @@
+html.dark {
+    // :root {
+
+        // Element Plus
+        // Menu
+        --tw-menu-bg:                               theme(backgroundColor.gray.800);
+        --tw-menu-item-color:                       rgb(144, 151, 167);
+        --tw-menu-item-active-color:                rgb(200, 205, 220);
+        --tw-menu-item-active-bg:                   rgba(30, 133, 255, 0.1);
+        --tw-menu-item-hover-color:                 rgb(200, 205, 220);
+        --tw-menu-item-hover-bg:                    rgba(30, 133, 255, 0.1);
+    
+        // Page Header
+        --tw-topbar-bg:                           rgb(30, 41, 59);
+        --tw-topbar-item-color:                   rgb(131, 145, 162);
+        --tw-topbar-item-active-bg:               rgb(70, 79, 91);
+        --tw-topbar-item-active-color:            rgb(188, 206, 228);
+        --tw-topbar-item-hover-bg:                rgb(70, 79, 91);
+        --tw-topbar-item-hover-color:             rgb(188, 206, 228);
+    // }
+}
