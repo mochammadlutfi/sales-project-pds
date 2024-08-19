@@ -56,7 +56,7 @@ const submit = async () => {
         const data = response.data.result;
         authStore.updateToken(data.access_token);
         authStore.updateUser(data.user);
-        // authStore.updatePermissions(data.permissions);
+        authStore.updatePermissions(data.permissions);
         router.push('/dashboard');
     } catch (error) {
         errors.value = error.validation;

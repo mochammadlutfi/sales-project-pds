@@ -52,7 +52,7 @@ class AuthController extends Controller
             ], 422);
 
         }else{
-            $user = User::with('branch')->where('username', $request->username)->first();
+            $user = Sales::with('branch')->where('username', $request->username)->first();
 
             if ($user != null) {
                 if (Hash::check($request->password, $user->password)) {

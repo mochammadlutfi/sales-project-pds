@@ -70,6 +70,8 @@ class SalesController extends Controller
                 $data->name = $request->name;
                 $data->email = $request->email;
                 $data->phone = $request->phone;
+                $data->username = $request->username;
+                $data->password = $request->password;
 
                 if(!empty($user->branch_id)){
                     $data->branch_id = $user->branch_id;

@@ -22,6 +22,9 @@
                         <el-form-item :label="$t('email')" :error="errors.email">
                             <el-input v-model="form.email" />
                         </el-form-item>
+                        <el-form-item :label="$t('username')" :error="errors.username">
+                            <el-input v-model="form.username" />
+                        </el-form-item>
                     </el-col>
                     <el-col :span="12">
                         <el-form-item :label="$t('phone')" :error="errors.phone">
@@ -31,6 +34,9 @@
                         </el-form-item>
                         <el-form-item :label="$t('branch')" :error="errors.branch_id" v-if="user.role == 'Admin'">
                             <select-branch v-model="form.branch_id"/>
+                        </el-form-item>
+                        <el-form-item :label="$t('password')" :error="errors.password">
+                            <el-input v-model="form.password" />
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -68,6 +74,8 @@ const form = ref({
     email : '',
     phone : '',
     branch_id : null,
+    username : '',
+    password : ''
 });
 const router = useRouter();
 const errors = ref({});
@@ -84,6 +92,7 @@ const fetchData = async () => {
             form.value.email = data.email;
             form.value.phone = data.phone;
             form.value.branch_id = data.branch_id;
+            form.value.username = data.username;
         }
     } catch (error) {
         console.error(error);
