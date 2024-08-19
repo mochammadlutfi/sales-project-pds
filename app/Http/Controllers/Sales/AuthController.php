@@ -40,7 +40,7 @@ class AuthController extends Controller
     {
 
         $rules = [
-            'username' => 'required|exists:users,username',
+            'username' => 'required|exists:sales,username',
             'password' => 'required|string'
         ];
 
