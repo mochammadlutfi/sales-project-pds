@@ -20,31 +20,22 @@ class ProjectController extends Controller
     {
         $sort = !empty($request->sort) ? $request->sort : 'id';
         $sortDir = !empty($request->sortDir) ? $request->sortDir : 'DESC';
-        $limit = ($request->limit) ? $request->limit : 25;
-        $page = $request->page;
-        $branch_id = $request->branch_id;
-        $sales_id = $request->sales_id;
-
         $user = auth()->user();
-        // dd($auth);
         
         $query = Project::with(['branch', 'sales'])
-        ->when(!empty($search), function($q, $search) {
-            $q->where('name', $search);
+        ->when(!empty($request->name), function($q, $search) {
+            $q->where('name', 'LIKE', '%'.$search.'%');
         })
-        ->when(!empty($branch_id), function($q, $branch_id) {
+        ->when(!empty($request->branch_id), function($q, $branch_id) {
             $q->where('branch_id', $branch_id);
         })
-        ->when(!empty($sales_id), function($q, $sales_id) {
+        ->when(!empty($request->sales_id), function($q, $sales_id) {
             $q->where('sales_id', $sales_id);
-        })
-        ->when(!empty($user->branch_id), function($q) use($user) {
-            $q->where('branch_id', $user->branch_id);
         })
         ->orderBy($sort, $sortDir);
 
-        if($page){
-            $data = $query->paginate($limit);
+        if($request->limit){
+            $data = $query->paginate($request->limit);
         }else{
             $data = $query->get();
         }

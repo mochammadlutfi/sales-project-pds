@@ -52,7 +52,7 @@
                         </el-col>
                         <el-col :md="8">
                             <el-form-item :label="$t('sales_person')">
-                                <select-sales v-model="params.sales_id"/>
+                                <select-sales v-model="params.sales_id" :branch="params.branch_id"/>
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -204,13 +204,11 @@ const fetchData = async (page = 1) => {
         const response = await axios.get('/project', { params : params.value });
         if (response.status === 200) {
             dataList.value = response.data.data;
-            Object.assign(params, {
-                from: response.data.from,
-                to: response.data.to,
-                page: response.data.current_page,
-                total: response.data.total,
-                pageSize: response.data.per_page,
-            });
+            params.value.from = response.data.from;
+            params.value.to = response.data.to;
+            params.value.page = response.data.page;
+            params.value.total = response.data.total;
+            params.value.pageSize = response.data.pageSize;
         }
         loading.value = false;
     } catch (error) {

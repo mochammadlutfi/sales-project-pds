@@ -1,0 +1,11 @@
+.badge{
+    @apply font-medium me-2 px-2.5 py-0.5 rounded;
+
+    &.badge-primary{
+        @apply bg-primary text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300;
+    }
+
+    &.badge-warning{
+        @apply bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300;
+    }
+}

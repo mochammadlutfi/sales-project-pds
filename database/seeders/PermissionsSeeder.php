@@ -43,7 +43,5 @@ class PermissionsSeeder extends Seeder
         }
 
         Permission::insert($insert_data);
-
-
     }
 }

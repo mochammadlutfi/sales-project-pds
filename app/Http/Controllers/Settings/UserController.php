@@ -127,7 +127,7 @@ class UserController extends Controller
                 }
                 $data->save();
 
-                $data->assignRole($request->role);
+                $data->syncRoles([$request->role]);
             }catch(\QueryException $e){
                 DB::rollback();
                 return response()->json([

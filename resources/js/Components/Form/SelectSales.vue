@@ -28,9 +28,12 @@ const props = defineProps({
   branch : {
     type : Number,
     default : null,
+  },
+  parent : {
+    type : Boolean,
+    default : false,
   }
 });
-
 
 const emit = defineEmits(['update:modelValue']);
 

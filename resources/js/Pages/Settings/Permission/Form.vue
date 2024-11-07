@@ -25,7 +25,6 @@
                         {{ $t(scope.row.name) }}
                     </template>
                 </el-table-column>
-
                 <el-table-column :label="$t('view')" width="100">
                     <template #default="scope">
                         <el-checkbox v-model="scope.row.view"/>    

@@ -19,13 +19,19 @@
                     <div class="text-xs mb-1">Project Name</div>
                     <h3 class="text-lg font-bold">{{ data.name }}</h3>
                 </div>
-                <el-button type="primary" @click.prevent="updateStatus('done')" v-if="user.role != 'Operator' && data.status != 'done'">
+                <el-button type="primary" @click.prevent="updateStatus('done')" v-if="data.status != 'done'  && user != null && user.role != 'Operator'">
                     <i class="me-2 mgc_check_fill"></i>
                     Done
                 </el-button>
             </div>
             <el-row :gutter="20">
                 <el-col :span="12">
+                    <el-row class="mb-2">
+                        <el-col :span="8">Status</el-col>
+                        <el-col :span="16" class="font-semibold">
+                            : <span class="badge badge-warning">Draft</span>
+                        </el-col>
+                    </el-row>
                     <el-row class="mb-2">
                         <el-col :span="8">{{ $t('project.address')}}</el-col>
                         <el-col :span="16" class="font-semibold">
@@ -114,7 +120,7 @@
             </el-select>
 
             <div class="flex items-center gap-2">
-                <el-button type="primary" @click.prevent="doExport" v-if="user.role != 'Operator'">
+                <el-button type="primary" @click.prevent="doExport" v-if="user != null && user.role != 'Operator'">
                     <i class="mgc_download_line me-2"></i>
                     Export Excel
                 </el-button>
@@ -161,6 +167,17 @@
             <el-table-column :label="$t('project.image')" width="100px">
                 <template #default="scope">
                     <img :src="scope.row.image_url" class="h-12"/>
+                    
+                    <!-- <el-image
+                    class="h-12"
+                    :src="scope.row.image_url"
+                    :zoom-rate="1.2"
+                    :max-scale="7"
+                    :min-scale="0.2"
+                    :preview-src-list="srcList"
+                    :initial-index="4"
+                    fit="cover"
+                    /> -->
                 </template>
             </el-table-column>
             <el-table-column :label="$t('project.description')">
@@ -359,6 +376,7 @@ const onSubmit = async () => {
         onReset();
         fetchActivity();
     } catch (error) {
+        console.log(error);
         errors.value = error.validation;
         ElMessage({ message: 'Error Message', type: 'error' });
     } finally {

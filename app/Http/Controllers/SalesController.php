@@ -23,15 +23,15 @@ class SalesController extends Controller
         $user = auth()->user();
         
         $query = Sales::with(['branch'])
-        ->when(!empty($search), function($q, $search) {
+        ->when($request->name, function($q, $search) {
             $q->where('name', $search);
         })
-        ->when(!empty($user->branch_id), function($q) use($user) {
-            $q->where('branch_id', $user->branch_id);
+        ->when($request->branch_id, function($q, $branch){
+            $q->where('branch_id', $branch);
         })
         ->orderBy($sort, $sortDir);
 
-        if($page){
+        if($request->limit){
             $data = $query->paginate($limit);
         }else{
             $data = $query->get();

@@ -108,13 +108,13 @@
 </template>
 <script setup>
 import SelectBranch from "@/Components/Form/SelectBranch.vue";
-import { ref, reactive, onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import { ElMessage, ElMessageBox } from 'element-plus';
 
 const loading = ref(false);
 const dataList = ref([]);
-const params = reactive({
+const params = ref({
     page: 1,
     limit: 25,
     from: 0,
@@ -122,24 +122,28 @@ const params = reactive({
     total: 0,
     pageSize: 0,
     name: null,
-    manager_id: null,
-    address: null,
+    branch_id: null,
 });
 const filterShow = ref(false);
+
+const resetFilter = () => {
+    params.value.name = null;
+    params.value.branch_id = null;
+    fetchData();
+};
 
 const fetchData = async (page = 1) => {
     try {
         loading.value = true;
-        const response = await axios.get('/sales', { params });
+        const response = await axios.get('/sales',  { params : params.value });
         if (response.status === 200) {
             dataList.value = response.data.data;
-            Object.assign(params, {
-                from: response.data.from,
-                to: response.data.to,
-                page: response.data.current_page,
-                total: response.data.total,
-                pageSize: response.data.per_page,
-            });
+            dataList.value = response.data.data;
+            params.value.from = response.data.from;
+            params.value.to = response.data.to;
+            params.value.page = response.data.page;
+            params.value.total = response.data.total;
+            params.value.pageSize = response.data.pageSize;
         }
         loading.value = false;
     } catch (error) {

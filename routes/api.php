@@ -26,6 +26,8 @@ Route::namespace('App\Http\Controllers')->group(function(){
     Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('/logout', 'AuthController@logout')->name("logout");
 
+        Route::get('/dashboard', 'DashboardController@index')->name("dashboard");
+
         Route::prefix('/profile')->name('profile.')->group(function () {
             Route::get('/', 'ProfileController@index')->name('index');
             Route::post('/update','ProfileController@update')->name('update');
