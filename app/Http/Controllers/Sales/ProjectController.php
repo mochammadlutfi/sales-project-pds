@@ -45,13 +45,12 @@ class ProjectController extends Controller
         $rules = [
             'name' => 'required',
             'address' => 'required',
-            'customer_name' => 'required|unique:sales,phone',
-            'customer_phone' => 'required|unique:sales,username',
+            'customer_name' => 'required',
+            'customer_phone' => 'required',
+            'customer_email' => 'required',
             'cp_name' => 'required',
             'cp_position' => 'required',
             'cp_phone' => 'required',
-            'branch_id' => 'required',
-            'sales_id' => 'required',
             'amount' => 'required|string'
         ];
         $validator = Validator::make($request->all(), $rules);
@@ -65,16 +64,19 @@ class ProjectController extends Controller
             try
             {
                 DB::beginTransaction();
+				$auth = auth()->guard('salesman')->user();
+				
                 $data = new Project();
                 $data->name = $request->name;
                 $data->address = $request->address;
                 $data->customer_name = $request->customer_name;
                 $data->customer_phone = $request->customer_phone;
+                $data->customer_email = $request->customer_email;
                 $data->cp_name = $request->cp_name;
                 $data->cp_position = $request->cp_position;
                 $data->cp_phone = $request->cp_phone;
-                $data->branch_id = $request->branch_id;
-                $data->sales_id = $request->sales_id;
+                $data->branch_id = $auth->branch_id;
+                $data->sales_id = $auth->id;
                 $data->is_ready = $request->is_ready;
                 $data->amount = $request->amount;
                 $data->status = 'draft';
@@ -154,12 +156,4 @@ class ProjectController extends Controller
             }
         }
     }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    } 
 }

@@ -58,8 +58,8 @@
                         </el-form-item>
                         <el-form-item label="Status" :error="errors.status">
                             <el-select v-model="form.status" placeholder="Pilih Status">
-                                <el-option label="Draft" value="draft"/>
-                                <el-option label="Follow Up" value="follow up"/>
+                                <el-option label="Draft" value="Draft"/>
+                                <el-option label="Follow Up" value="Follow Up"/>
                                 <el-option label="Done" value="Done"/>
                             </el-select>
                         </el-form-item>
@@ -149,14 +149,14 @@ const fetchData = async () => {
 
 const onSubmit = async () => {
     isLoading.value = true;
-    const url = form.id ?
-        `/project/${form.id}/update` :
+    const url = form.value.id ?
+        `/project/${form.value.id}/update` :
         '/project/store';
   try {
     const response = await axios.post(url, form.value);
-    const data = response.data.result;
+    const project_id = response.data.result.id;
 
-    router.push({name : 'project'});
+    router.push({name : 'project.show', params: { project_id } });
     ElMessage({
         message: t('success_msg'),
         type: 'success',

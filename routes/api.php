@@ -127,7 +127,7 @@ Route::namespace('App\Http\Controllers\Sales')->prefix('/salesman')->group(funct
         return response()->json($data);
     });
 
-    Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::group(['middleware' => ['auth:salesman']], function () {
 
 
         Route::post('/logout', 'AuthController@logout')->name("logout");

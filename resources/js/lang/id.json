@@ -52,6 +52,7 @@
     "disconnect" : "Putuskan",
     "phone" : "No Telepon",
     "sales_person" : "Sales",
+    "delete_confirm" : "Data yang dihapus tidak bisa dikembalikan",
     "project" : {
         "title" : "Proyek",
         "customer" : "Pelanggan",

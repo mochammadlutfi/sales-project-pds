@@ -37,7 +37,12 @@ export default [
           },
           {
             path: '/create',
-            name : 'project.index',
+            name : 'project.create',
+            component: ProjectForm
+          },
+          {
+            path: '/create',
+            name : 'project.create',
             component: ProjectForm
           },
           {

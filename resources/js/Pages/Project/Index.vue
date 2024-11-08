@@ -99,6 +99,11 @@
                 </template>
             </el-table-column>
             <el-table-column prop="branch.name" :label="$t('branch')" width="140 "/>
+            <el-table-column label="Status">
+                <template #default="scope">
+                    {{ scope.row.status }}
+                </template>
+            </el-table-column>
             <el-table-column :label="$t('action')" align="center" width="100">
                 <template #default="scope">
                     <el-dropdown popper-class="dropdown-action" trigger="click" >
@@ -119,7 +124,7 @@
                                         {{  $t('edit') }}
                                     </router-link>
                                 </el-dropdown-item>
-                                <el-dropdown-item @click.prevent="onDelete(scope.row.id)" v-if="scope.row.id != 1">
+                                <el-dropdown-item @click.prevent="onDelete(scope.row.id)" v-if="scope.row.status == 'Draft'">
                                     <i class="mgc_delete_2_line"></i>
                                     {{ $t('delete') }}
                                 </el-dropdown-item>
@@ -234,6 +239,22 @@ const doDownload = async () => {
     window.location.href  = '/report/project';
 }
 
+
+const onDelete = async (id) => {
+    try {
+        await ElMessageBox.confirm(t('delete_confirm'), t('warning'), {
+            confirmButtonText: 'OK',
+            cancelButtonText: 'Cancel',
+            type: 'warning',
+        });
+        await axios.delete(`/project/${id}/delete`);
+        fetchData();
+        ElMessage({ type: 'success', message: 'Delete Success' });
+    } catch (error) {
+        console.error('Error deleting project:', error);
+        ElMessage({ type: 'error', message: 'Delete Cancel' });
+    }
+};
 
 onMounted(() => {
     fetchData();

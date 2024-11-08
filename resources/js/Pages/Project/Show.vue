@@ -29,7 +29,7 @@
                     <el-row class="mb-2">
                         <el-col :span="8">Status</el-col>
                         <el-col :span="16" class="font-semibold">
-                            : <span class="badge badge-warning">Draft</span>
+                            : {{ data.status }}
                         </el-col>
                     </el-row>
                     <el-row class="mb-2">
@@ -183,6 +183,27 @@
             <el-table-column :label="$t('project.description')">
                 <template #default="scope">
                     {{ scope.row.description }}
+                </template>
+            </el-table-column>
+            <el-table-column :label="$t('action')" align="center" width="100">
+                <template #default="scope">
+                    <el-dropdown popper-class="dropdown-action" trigger="click" >
+                        <el-button type="primary">
+                            {{ $t('action') }}
+                        </el-button>
+                        <template #dropdown>
+                            <el-dropdown-menu>
+                                <el-dropdown-item @click.prevent="onEdit(scope.row)">
+                                    <i class="mgc_edit_line"></i>
+                                    {{  $t('edit') }}
+                                </el-dropdown-item>
+                                <el-dropdown-item @click.prevent="onDelete(scope.row.id)">
+                                    <i class="mgc_delete_2_line"></i>
+                                    {{ $t('delete') }}
+                                </el-dropdown-item>
+                            </el-dropdown-menu>
+                        </template>
+                    </el-dropdown>
                 </template>
             </el-table-column>
         </el-table>
@@ -349,12 +370,6 @@ const onCreate = () => {
     modalForm.value = true;
     modalTitle.value = `${t('create')} ${t('project.activity')}`;
 };
-
-const onEdit = (id) => {
-    modalForm.value = true;
-    modalTitle.value = `${t('edit')} ${t('project.activity')}`;
-}
-
 const onReset = () => {
     form.id = null;
     form.date = null;
@@ -364,7 +379,7 @@ const onReset = () => {
 
 const onSubmit = async () => {
     modalLoading.value = true;
-    const url = form.id ? `/activity/${form.id}/update` : '/activity/store';
+    const url = form.value.id ? `/activity/${form.value.id}/update` : '/activity/store';
     try {
         const response = await axios.post(url, form.value, {
             headers: {
@@ -407,11 +422,30 @@ const fetchActivity = async (page = 1) => {
     }
 };
 
-// const edid = (id) => {
-//     modalForm.value = true;
-//     modalTitle.value = `${t('create')} ${'project.activity'}`;
-// };
+const onEdit = (data) => {
+    modalForm.value = true;
+    modalTitle.value = `${t('edit')} ${'project.activity'}`;
+    form.value.id = data.id;
+    form.value.date = data.date;
+    form.value.description = data.description;
+    form.value.image = data.image;
+};
 
+const onDelete = async (id) => {
+    try {
+        await ElMessageBox.confirm(t('delete_confirm'), t('warning'), {
+            confirmButtonText: 'OK',
+            cancelButtonText: 'Cancel',
+            type: 'warning',
+        });
+        await axios.delete(`/activity/${id}/delete`);
+        fetchActivity();
+        ElMessage({ type: 'success', message: 'Delete Success' });
+    } catch (error) {
+        console.error('Error deleting activity:', error);
+        ElMessage({ type: 'error', message: 'Delete Cancel' });
+    }
+};
 onMounted(() => {
     fetchData();
     fetchActivity();

@@ -53,6 +53,7 @@
     "phone" : "Phone Number",
     "sales_person" : "Sales Person",
     "disconnect" : "Disconnect",
+    "delete_confirm" : "Deleted Data Cannot be Recovered",
     "project" : {
         "title" : "Project",
         "customer" : "Customer",

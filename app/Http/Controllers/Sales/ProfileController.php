@@ -20,7 +20,7 @@ class ProfileController extends Controller
     {
         $id = auth()->user()->id;
 
-        $data = Sales::where('id', $id)->first();
+        $data = Sales::with('branch')->where('id', $id)->first();
         
         return response()->json($data,200);
     }

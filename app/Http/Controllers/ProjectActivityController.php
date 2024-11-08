@@ -113,48 +113,46 @@ class ProjectActivityController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        {
-            $rules = [
-                'name' => 'required',
-                'phone' => 'required|unique:sales,phone,'.$id,
-                'username' => 'required|unique:sales,username,'.$id,
-                'branch_id' => 'required',
-                // 'password' => 'required|string',
-                // 'password_confirmation' => 'required'
-            ];
-    
-            $validator = Validator::make($request->all(), $rules);
-            if ($validator->fails()){
+        $rules = [
+            'date' => 'required',
+            'description' => 'required',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()){
+            return response()->json([
+                'success' => false,
+                'result' => $validator->errors(),
+            ], 422);
+
+        }else{
+            DB::beginTransaction();
+            try{
+
+                $data = ProjectActivity::where('id', $id)->first();
+                $data->date = Carbon::parse($request->date)->format('Y-m-d');
+                $data->description = $request->description;
+                if(!empty($request->file('image'))){
+                    
+                    Storage::
+
+                    $data->image = $this->uploadImage($request->file('image'), $data->id);
+                    $data->save();
+                }
+                $data->save();
+
+            }catch(\QueryException $e){
+                DB::rollback();
                 return response()->json([
                     'success' => false,
-                    'result' => $validator->errors(),
+                    'result' => $e,
                 ], 422);
-    
-            }else{
-                DB::beginTransaction();
-                try{
-
-                    $data = Sales::where('id', $id)->first();
-                    $data->name = $request->name;
-                    $data->phone = $request->phone;
-                    $data->branch_id = $request->branch_id;
-                    $data->username = $request->username;
-                    // $data->password = $request->password;
-                    $data->save();
-
-                }catch(\QueryException $e){
-                    DB::rollback();
-                    return response()->json([
-                        'success' => false,
-                        'result' => $e,
-                    ], 422);
-                }
-    
-                DB::commit();
-                return response()->json([
-                    'success' => true,
-                ], 200);
             }
+
+            DB::commit();
+            return response()->json([
+                'success' => true,
+            ], 200);
         }
     }
 
@@ -163,8 +161,23 @@ class ProjectActivityController extends Controller
      */
     public function destroy(string $id)
     {
-        //
-    } 
+        DB::beginTransaction();
+        try{
+            $data = ProjectActivity::where('id', $id)->first();
+            $data->delete();
+
+        }catch(\QueryException $e){
+            DB::rollback();
+            return response()->json([
+                'success' => false,
+                'result' => $e,
+            ], 422);
+        }
+        DB::commit();
+        return response()->json([
+            'success' => true,
+        ], 200);
+    }
     
     public function export($id, Request $request)
     {

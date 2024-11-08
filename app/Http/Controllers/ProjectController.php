@@ -93,13 +93,14 @@ class ProjectController extends Controller
                 }
                 $data->sales_id = $request->sales_id;
                 $data->is_ready = $request->is_ready;
-                $data->status = 'draft';
+                $data->status = $request->status;
                 $data->link_map = $request->link_map;
                 $data->save();
 
                 DB::commit();
                 return response()->json([
                     'success' => true,
+                    'result' => $data,
                 ], 200);
 
             }catch(\Exception $e){
@@ -173,13 +174,14 @@ class ProjectController extends Controller
                 }
                 $data->sales_id = $request->sales_id;
                 $data->is_ready = $request->is_ready;
-                $data->status = 'draft';
+                $data->status = $request->status;
                 $data->link_map = $request->link_map;
                 $data->save();
 
                 DB::commit();
                 return response()->json([
                     'success' => true,
+                    'result' => $data,
                 ], 200);
 
             }catch(\Exception $e){
