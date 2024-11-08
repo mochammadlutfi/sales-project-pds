@@ -79,7 +79,7 @@ class ProjectController extends Controller
                 $data->sales_id = $auth->id;
                 $data->is_ready = $request->is_ready;
                 $data->amount = $request->amount;
-                $data->status = 'draft';
+                $data->status = 'Draft';
                 $data->save();
                     
                 DB::commit();
