@@ -19,11 +19,14 @@ class ProjectController extends Controller
         $sortDir = !empty($request->sortDir) ? $request->sortDir : 'desc';
         $limit = ($request->limit) ? $request->limit : 25;
         $page = $request->page;
+
+        $user = auth()->user();
         
         $query = Project::with(['branch'])
         ->when(!empty($search), function($q, $search) {
             $q->where('name', $search);
         })
+        ->where('sales_id', $user->id)
         ->orderBy($sort, $sortDir);
 
         if($page){

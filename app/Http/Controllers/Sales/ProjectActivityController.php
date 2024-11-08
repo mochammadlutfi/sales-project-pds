@@ -21,6 +21,9 @@ class ProjectActivityController extends Controller
         $limit = ($request->limit) ? $request->limit : 25;
         $page = $request->page;
         $project_id = $request->project_id;
+        
+        $user = auth()->user();
+
         $query = ProjectActivity::
         when($project_id, function($q, $project_id) {
             return $q->where('project_id', $project_id);
@@ -28,6 +31,7 @@ class ProjectActivityController extends Controller
         ->when(empty($project_id), function($q) {
             return $q->with(['project']);
         })
+        ->where('sales_id', $user->id)
         ->orderBy($sort, $sortDir);
 
         if($page){
